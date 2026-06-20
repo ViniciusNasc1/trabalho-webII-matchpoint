@@ -14,14 +14,20 @@ use Illuminate\Notifications\Notifiable;
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    protected $fillable= [
+        'name',
+        'email',
+        'password',
+        'role',
+    ];
+
+    protected $hidden=[
+        'passqord',
+        'remember_token',
+    ];
+
     protected function casts(): array
     {
         return [
@@ -29,4 +35,31 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isPlayer(): bool
+    {
+        return $this->role === 'player';
+    }
+
+    public function teams(){
+        return $this->belongsToMany(Team::class, 'team_members')
+                    ->withPivot('status', 'joined_at')
+                    ->withTimestamps();
+    }
+
+    public function ownedTeams(){
+        return $this->hasMany(Team::class, 'owner_id');
+    }
+
+    public function registeredResults()
+    {
+        return $this->hasMany(Result::class, 'registered_by');
+    }
+    
+
 }
