@@ -27,12 +27,12 @@ class Tournament extends Model
         ];
     }
 
-    public function game(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function game()
     {
         return $this->belongsTo(Game::class);
     }
 
-    public function creator(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
     }

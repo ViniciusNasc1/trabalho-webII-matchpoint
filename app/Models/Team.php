@@ -17,19 +17,19 @@ class Team extends Model
         'logo_url',
     ];
 
-    public function owner(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function owner()
     {
         return $this->belongsTo(User::class, 'owner_id');
     }
 
-    public function members(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function members()
     {
         return $this->belongsToMany(User::class, 'team_members')
                     ->withPivot('status', 'joined_at')
                     ->withTimestamps();
     }
 
-    public function activeMembers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function activeMembers()
     {
         return $this->belongsToMany(User::class, 'team_members')
                     ->withPivot('status', 'joined_at')

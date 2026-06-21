@@ -16,7 +16,7 @@ class Game extends Model
         'image_url',
     ];
 
-    public function tournaments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function tournaments()
     {
         return $this->hasMany(Tournament::class);
     }

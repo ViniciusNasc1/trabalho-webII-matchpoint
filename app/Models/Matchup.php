@@ -33,7 +33,7 @@ class Matchup extends Model
         ];
     }
 
-    public function tournament(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function tournament()
     {
         return $this->belongsTo(Tournament::class);
     }
