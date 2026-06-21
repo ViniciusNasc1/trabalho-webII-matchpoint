@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('winner_type')->nullable();
             $table->unsignedBigInteger('winner_id')->nullable();
             $table->enum('status', ['pending', 'ongoing', 'finished'])->default('pending');
+            $table->softDeletes();
             $table->timestamp('scheduled_at')->nullable();
             $table->timestamps();
         });

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('score_a');
             $table->string('score_b');
             $table->text('notes')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

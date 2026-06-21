@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('tournament_id')->constrained('tournaments')->cascadeOnDelete();
             $table->string('participant_type');
             $table->unsignedBigInteger('participant_id');
+            $table->softDeletes();
             $table->timestamp('registered_at')->useCurrent();
             $table->timestamps();
 

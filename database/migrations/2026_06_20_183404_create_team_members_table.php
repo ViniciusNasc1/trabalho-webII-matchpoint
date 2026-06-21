@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->enum('status', ['active', 'invited', 'removed'])->default('invited');
+            $table->softDeletes();
             $table->timestamp('joined_at')->nullable();
             $table->timestamps();
 

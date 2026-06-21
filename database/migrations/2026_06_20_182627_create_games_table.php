@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('platform');
             $table->string('image_url')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

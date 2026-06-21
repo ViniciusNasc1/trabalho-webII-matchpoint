@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('mode', ['solo', 'team']);
             $table->integer('max_participants');
             $table->enum('status', ['draft', 'open', 'ongoing', 'finished'])->default('draft');
+            $table->softDeletes();
             $table->timestamp('starts_at')->nullable;
             $table->timestamps();
         });
