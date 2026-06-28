@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('max_participants');
             $table->enum('status', ['draft', 'open', 'ongoing', 'finished'])->default('draft');
             $table->softDeletes();
-            $table->timestamp('starts_at')->nullable;
+            $table->timestamp('starts_at')->nullable();
             $table->timestamps();
         });
     }
