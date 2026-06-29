@@ -7,12 +7,12 @@ use App\Models\User;
 
 class ResultPolicy
 {
-    public function viewAny(User $user): bool
+    public function viewAny(): bool
     {
         return true;
     }
 
-    public function view(User $user, Result $result): bool
+    public function view(): bool
     {
         return true;
     }
@@ -22,12 +22,12 @@ class ResultPolicy
         return $user->isAdmin();
     }
 
-    public function update(User $user, Result $result): bool
+    public function update(User $user): bool
     {
         return $user->isAdmin();
     }
 
-    public function delete(User $user, Result $result): bool
+    public function delete(User $user): bool
     {
         return $user->isAdmin();
     }
