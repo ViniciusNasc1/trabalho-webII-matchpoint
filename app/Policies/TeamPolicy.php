@@ -7,17 +7,17 @@ use App\Models\User;
 
 class TeamPolicy
 {
-    public function viewAny(): bool
+    public function viewAny(User $user): bool
     {
         return true;
     }
 
-    public function view(): bool
+    public function view(User $user, Team $team): bool
     {
         return true;
     }
 
-    public function create(): bool
+    public function create(User $user): bool
     {
         return true;
     }

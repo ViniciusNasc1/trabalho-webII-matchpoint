@@ -12,7 +12,7 @@ class TournamentPolicy
         return true;
     }
 
-    public function view(): bool
+    public function view(User $user, Tournament $tournament): bool
     {
         return true;
     }
@@ -22,12 +22,12 @@ class TournamentPolicy
         return $user->isAdmin();
     }
 
-    public function update(User $user): bool
+    public function update(User $user, Tournament $tournament): bool
     {
         return $user->isAdmin();
     }
 
-    public function delete(User $user): bool
+    public function delete(User $user, Tournament $tournament): bool
     {
         return $user->isAdmin();
     }

@@ -7,12 +7,12 @@ use App\Models\User;
 
 class MatchupPolicy
 {
-    public function viewAny(): bool
+    public function viewAny(User $user): bool
     {
         return true;
     }
 
-    public function view(): bool
+    public function view(User $user, Matchup $matchup): bool
     {
         return true;
     }
@@ -22,12 +22,12 @@ class MatchupPolicy
         return $user->isAdmin();
     }
 
-    public function update(User $user): bool
+    public function update(User $user, Matchup $matchup): bool
     {
         return $user->isAdmin();
     }
 
-    public function delete(User $user): bool
+    public function delete(User $user, Matchup $matchup): bool
     {
         return $user->isAdmin();
     }
