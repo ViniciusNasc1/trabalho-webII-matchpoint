@@ -94,9 +94,10 @@ class GameController extends Controller
      */
     public function destroy(string $id)
     {
-        Gate::authorize('delete');
-
         $game = $this->service->find($id);
+        Gate::authorize('delete', $game);
+
+
 
         if(isset($game) && !empty($game)) {
             $this->service->remove($id);
@@ -108,9 +109,9 @@ class GameController extends Controller
 
     public function audit(string $id)
     {
-
-        Gate::authorize('delete');
         $game = $this->service->find($id);
+        Gate::authorize('delete', $game);
+
 
         if (isset($game) && !empty($game)) {
             $data = $this->service->audit($id);
