@@ -118,4 +118,18 @@ class MatchupController extends Controller
 
         return "<h1>PARTIDA NÃO ENCONTRADA!</h1>";
     }
+
+    public function audit(string $id)
+    {
+        $match = $this->service->find($id);
+        Gate::authorize('delete', $match);
+
+
+        if (isset($match) && !empty($match)) {
+            $data = $this->service->audit($id);
+            return view('match.audit', compact(['data']));
+        }
+
+        return "<h1>JOGO NÃO ENCONTRADO!</h1>";
+    }
 }

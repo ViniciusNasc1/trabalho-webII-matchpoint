@@ -108,4 +108,18 @@ class ResultController extends Controller
 
         return "<h1>RESULTADO NÃO ENCONTRADO!</h1>";
     }
+
+    public function audit(string $id)
+    {
+        $result = $this->service->find($id);
+        Gate::authorize('delete', $result);
+
+
+        if (isset($result) && !empty($result)) {
+            $data = $this->service->audit($id);
+            return view('result.audit', compact(['data']));
+        }
+
+        return "<h1>JOGO NÃO ENCONTRADO!</h1>";
+    }
 }
