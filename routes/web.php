@@ -6,6 +6,7 @@ use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TournamentController;
 use App\Http\Controllers\MatchupController;
 use App\Http\Controllers\ResultController;
+use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\TournamentParticipantController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,6 +41,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('results', ResultController::class)->except(['destroy']);
 
     Route::resource('tournaments_participants', TournamentParticipantController::class);
+
+    Route::resource('team_members', TeamMemberController::class);
 
 });
 
