@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Gate;
 
 class TournamentController extends Controller
 {
-    public function __construct(protected TournamentService $service) {  }
+    public function __construct(protected TournamentService $service) { }
+
     /**
      * Display a listing of the resource.
      */
@@ -18,7 +19,7 @@ class TournamentController extends Controller
     {
         Gate::authorize('viewAny', Tournament::class);
         $data = $this->service->all(['game', 'creator', 'matches', 'participants'], [], 'created_at');
-        return view('tournament.index', compact('data'));
+        return view('tournaments.index', compact('data'));
     }
 
     /**
@@ -27,9 +28,8 @@ class TournamentController extends Controller
     public function create()
     {
         Gate::authorize('create', Tournament::class);
-        return view('tournament.create');
+        return view('tournaments.create');
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -38,7 +38,9 @@ class TournamentController extends Controller
     {
         Gate::authorize('create', Tournament::class);
         $this->service->store($request->validated());
-        return redirect()->route('tournament.index');
+
+        return redirect()->route('tournaments.index')
+                         ->with('success', 'Torneio criado com sucesso!');
     }
 
     /**
@@ -46,13 +48,12 @@ class TournamentController extends Controller
      */
     public function show(string $id)
     {
-        $tournament = $this->service
-        ->find($id, ['game', 'creator', 'matches', 'participants']);
+        $tournament = $this->service->find($id, ['game', 'creator', 'matches', 'participants']);
 
         Gate::authorize('view', $tournament);
 
         if (isset($tournament) && !empty($tournament)) {
-            return view('tournament.view', compact('tournament'));
+            return view('tournaments.show', compact('tournament'));
         }
 
         return "<h1>TORNEIO NÃO ENCONTRADO</h1>";
@@ -63,13 +64,12 @@ class TournamentController extends Controller
      */
     public function edit(string $id)
     {
-        $tournament = $this->service
-        ->find($id, ['game', 'creator', 'matches', 'participants']);
+        $tournament = $this->service->find($id, ['game', 'creator', 'matches', 'participants']);
 
         Gate::authorize('update', $tournament);
 
         if (isset($tournament) && !empty($tournament)) {
-            return view('tournament.edit', compact('tournament'));
+            return view('tournaments.edit', compact('tournament'));
         }
 
         return "<h1>TORNEIO NÃO ENCONTRADO</h1>";
@@ -78,16 +78,16 @@ class TournamentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(string $id, TournamentRequest $request)
+    public function update(TournamentRequest $request, string $id)
     {
-        $tournament = $this->service
-        ->find($id, ['game', 'creator', 'matches', 'participants']);
+        $tournament = $this->service->find($id, ['game', 'creator', 'matches', 'participants']);
 
         Gate::authorize('update', $tournament);
 
         if (isset($tournament) && !empty($tournament)) {
             $this->service->update($request->validated(), $id);
-            return redirect()->route('tournaments.index');
+            return redirect()->route('tournaments.index')
+                             ->with('success', 'Torneio atualizado com sucesso!');
         }
 
         return "<h1>TORNEIO NÃO ENCONTRADO</h1>";
@@ -98,29 +98,48 @@ class TournamentController extends Controller
      */
     public function destroy(string $id)
     {
-        $tournament = $this->service
-        ->find($id);
+        $tournament = $this->service->find($id);
 
         Gate::authorize('delete', $tournament);
 
         if (isset($tournament) && !empty($tournament)) {
             $this->service->remove($id);
-            return redirect()->route('tournaments.index');
+            return redirect()->route('tournaments.index')
+                             ->with('success', 'Torneio removido com sucesso!');
         }
+
         return "<h1>TORNEIO NÃO ENCONTRADO</h1>";
     }
 
-        public function audit(string $id)
+    public function audit(string $id)
     {
         $tournament = $this->service->find($id);
         Gate::authorize('delete', $tournament);
 
-
-        if (isset($tournament) && !empty($tournament    )) {
+        if (isset($tournament) && !empty($tournament)) {
             $data = $this->service->audit($id);
-            return view('tournament.audit', compact(['data']));
+            return view('tournaments.audit', compact(['data']));
         }
 
         return "<h1>TORNEIO NÃO ENCONTRADO!</h1>";
+    }
+
+    public function start(string $id)
+    {
+        $tournament = $this->service->find($id, ['participants']);
+        Gate::authorize('update', $tournament);
+
+        if (!isset($tournament)) {
+            return "<h1>TORNEIO NÃO ENCONTRADO</h1>";
+        }
+
+        $result = $this->service->startTournament($id);
+
+        if (!$result) {
+            return back()->withErrors('Não foi possível iniciar o torneio. Verifique o número de participantes.');
+        }
+
+        return redirect()->route('tournaments.show', $id)
+                        ->with('success', 'Torneio iniciado! Bracket gerado com sucesso.');
     }
 }

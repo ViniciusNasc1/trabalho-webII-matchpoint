@@ -11,7 +11,7 @@ class TournamentRepository extends BaseRepository{
     protected Tournament $tournamentModel;
 
     public function __construct(Tournament $tournamentModel) {
-        $this->tournamentModel = $tournamentModel->create;
+        $this->tournamentModel = $tournamentModel;
     }
 
     #[Override]

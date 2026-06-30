@@ -11,14 +11,15 @@ use Illuminate\Support\Facades\Gate;
 class TeamController extends Controller
 {
     public function __construct(protected TeamService $service) { }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         Gate::authorize('viewAny', Team::class);
-        $data = $this->service->all(['members', 'owner','activeMembers', 'tournaments'], [], 'name');
-        return view('team.index', compact('data'));
+        $data = $this->service->all(['members', 'owner', 'activeMembers', 'tournaments'], [], 'name');
+        return view('teams.index', compact('data'));
     }
 
     /**
@@ -27,7 +28,7 @@ class TeamController extends Controller
     public function create()
     {
         Gate::authorize('create', Team::class);
-        return view('team.create');
+        return view('teams.create');
     }
 
     /**
@@ -37,10 +38,13 @@ class TeamController extends Controller
     {
         Gate::authorize('create', Team::class);
         $return = $this->service->store($request->validated());
+
         if (!$return) {
             return back()->withErrors('Não foi possível criar o time.');
         }
-        return redirect()->route('team.show', $return->id);
+
+        return redirect()->route('teams.show', $return->id)
+                         ->with('success', 'Time criado com sucesso!');
     }
 
     /**
@@ -52,7 +56,7 @@ class TeamController extends Controller
         Gate::authorize('view', $team);
 
         if (isset($team) && !empty($team)) {
-            return view('team.show', compact('team'));
+            return view('teams.show', compact('team'));
         }
 
         return "<h1>TIME NÃO ENCONTRADO</h1>";
@@ -67,7 +71,7 @@ class TeamController extends Controller
         Gate::authorize('update', $team);
 
         if (isset($team) && !empty($team)) {
-            return view('team.edit');
+            return view('teams.edit', compact('team'));
         }
 
         return "<h1>TIME NÃO ENCONTRADO</h1>";
@@ -88,7 +92,8 @@ class TeamController extends Controller
                 return back()->withErrors('Não foi possível atualizar as informações do time!');
             }
 
-            return redirect()->route('team.show', $return->id);
+            return redirect()->route('teams.show', $return->id)
+                             ->with('success', 'Time atualizado com sucesso!');
         }
 
         return "<h1>TIME NÃO ENCONTRADO!</h1>";
@@ -100,13 +105,14 @@ class TeamController extends Controller
     public function destroy(string $id)
     {
         $team = $this->service->find($id);
-
         Gate::authorize('delete', $team);
 
-        if (isset($result) && !empty($result)) {
+        if (isset($team) && !empty($team)) {
             $this->service->remove($id);
-            return redirect()->route('team.show', $team->id);
+            return redirect()->route('teams.index')
+                             ->with('success', 'Time removido com sucesso!');
         }
+
         return "<h1>TIME NÃO ENCONTRADO!</h1>";
     }
 
@@ -115,10 +121,9 @@ class TeamController extends Controller
         $team = $this->service->find($id);
         Gate::authorize('delete', $team);
 
-
         if (isset($team) && !empty($team)) {
             $data = $this->service->audit($id);
-            return view('team.audit', compact(['data']));
+            return view('teams.audit', compact(['data']));
         }
 
         return "<h1>TIME NÃO ENCONTRADO!</h1>";

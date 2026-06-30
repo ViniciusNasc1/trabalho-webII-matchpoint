@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Gate;
 
 class ResultController extends Controller
 {
-    public function __construct(protected ResultService $service) {  }
+    public function __construct(protected ResultService $service) { }
 
     /**
      * Display a listing of the resource.
@@ -19,15 +19,16 @@ class ResultController extends Controller
     {
         Gate::authorize('viewAny', Result::class);
         $data = $this->service->all(['match'], [], 'id');
-        return view('result.index', compact('data'));
+        return view('results.index', compact('data'));
     }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
         Gate::authorize('create', Result::class);
-        return view('result.create');
+        return view('results.create');
     }
 
     /**
@@ -37,7 +38,9 @@ class ResultController extends Controller
     {
         Gate::authorize('create', Result::class);
         $this->service->store($request->validated());
-        return redirect()->route('matchups.show', $request->match_id);
+
+        return redirect()->route('matchups.show', $request->match_id)
+                         ->with('success', 'Resultado registrado com sucesso!');
     }
 
     /**
@@ -50,7 +53,7 @@ class ResultController extends Controller
         Gate::authorize('view', $result);
 
         if (isset($result) && !empty($result)) {
-            return view('result.show', compact('result'));
+            return view('results.show', compact('result'));
         }
 
         return "<h1>RESULTADO NÃO ENCONTRADO!</h1>";
@@ -66,7 +69,7 @@ class ResultController extends Controller
         Gate::authorize('update', $result);
 
         if (isset($result) && !empty($result)) {
-            return view('result.show', compact('result'));
+            return view('results.edit', compact('result'));
         }
 
         return "<h1>RESULTADO NÃO ENCONTRADO!</h1>";
@@ -86,7 +89,8 @@ class ResultController extends Controller
             if (!$return) {
                 return back()->withErrors('Não foi possível atualizar o resultado.');
             }
-            return redirect()->route('matchups.show', $return->match_id);
+            return redirect()->route('matchups.show', $return->match_id)
+                             ->with('success', 'Resultado atualizado com sucesso!');
         }
 
         return "<h1>RESULTADO NÃO ENCONTRADO!</h1>";
@@ -103,7 +107,8 @@ class ResultController extends Controller
 
         if (isset($result) && !empty($result)) {
             $this->service->remove($id);
-            return redirect()->route('matchups.show', $result->match_id);
+            return redirect()->route('matchups.show', $result->match_id)
+                             ->with('success', 'Resultado removido com sucesso!');
         }
 
         return "<h1>RESULTADO NÃO ENCONTRADO!</h1>";
@@ -114,12 +119,11 @@ class ResultController extends Controller
         $result = $this->service->find($id);
         Gate::authorize('delete', $result);
 
-
         if (isset($result) && !empty($result)) {
             $data = $this->service->audit($id);
-            return view('result.audit', compact(['data']));
+            return view('results.audit', compact(['data']));
         }
 
-        return "<h1>TIME NÃO ENCONTRADO!</h1>";
+        return "<h1>RESULTADO NÃO ENCONTRADO!</h1>";
     }
 }

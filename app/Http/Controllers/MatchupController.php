@@ -11,21 +11,15 @@ use Illuminate\Support\Facades\Gate;
 class MatchupController extends Controller
 {
     public function __construct(protected MatchupService $service) { }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        Gate::authorize('create', Matchup::class);
-        return view('matchup.create');
+        Gate::authorize('viewAny', Matchup::class);
+        $data = $this->service->all(['tournament', 'participantA', 'participantB', 'winner'], [], 'created_at');
+        return view('matchups.index', compact('data'));
     }
 
     /**
@@ -35,7 +29,9 @@ class MatchupController extends Controller
     {
         Gate::authorize('create', Matchup::class);
         $this->service->store($request->validated());
-        return redirect()->route('tournament.show', $request->tournament_id);
+
+        return redirect()->route('tournaments.show', $request->tournament_id)
+                         ->with('success', 'Partida criada com sucesso!');
     }
 
     /**
@@ -43,40 +39,20 @@ class MatchupController extends Controller
      */
     public function show(string $id)
     {
-        $match = $this->service->find($id,
-        [
+        $match = $this->service->find($id, [
             'participantA',
             'participantB',
             'winner',
             'result',
         ]);
-        Gate::authorize('view', Matchup::class);
+
+        Gate::authorize('view', $match);
+
         if (isset($match) && !empty($match)) {
-            return view('match.view', compact('match'));
+            return view('matchups.show', compact('match'));
         }
 
         return "<h1>PARTIDA NÃO ENCONTRADA!</h1>";
-
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        $match = $this->service->find($id,
-        [
-            'participantA',
-            'participantB',
-            'winner',
-            'result',
-        ]);;
-        Gate::authorize('update', $match);
-        if (isset($match) && !empty($match)) {
-            return view('match.edit', compact('match'));
-        }
-
-        return "<H1>PARTIDA NÃO ENCONTRADA!</H1>";
     }
 
     /**
@@ -84,19 +60,19 @@ class MatchupController extends Controller
      */
     public function update(MatchupRequest $request, string $id)
     {
-        $match = $this->service->find($id,
-        [
+        $match = $this->service->find($id, [
             'participantA',
             'participantB',
             'winner',
             'result',
-        ]);;
+        ]);
 
         Gate::authorize('update', $match);
 
         if (isset($match)) {
             $this->service->update($request->validated(), $id);
-            return redirect()->route('tournaments.show', $match->tournament_id);
+            return redirect()->route('tournaments.show', $match->tournament_id)
+                             ->with('success', 'Partida atualizada com sucesso!');
         }
 
         return "<h1>PARTIDA NÃO ENCONTRADA!</h1>";
@@ -113,7 +89,8 @@ class MatchupController extends Controller
 
         if (isset($match)) {
             $this->service->remove($id);
-            return redirect()->route('tournaments.show', $match->tournament_id);
+            return redirect()->route('tournaments.show', $match->tournament_id)
+                             ->with('success', 'Partida removida com sucesso!');
         }
 
         return "<h1>PARTIDA NÃO ENCONTRADA!</h1>";
@@ -124,10 +101,9 @@ class MatchupController extends Controller
         $match = $this->service->find($id);
         Gate::authorize('delete', $match);
 
-
         if (isset($match) && !empty($match)) {
             $data = $this->service->audit($id);
-            return view('match.audit', compact(['data']));
+            return view('matchups.audit', compact(['data']));
         }
 
         return "<h1>PARTIDA NÃO ENCONTRADA!</h1>";

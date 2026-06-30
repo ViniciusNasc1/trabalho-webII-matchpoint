@@ -39,6 +39,7 @@ class GameController extends Controller
     {
         Gate::authorize('create', Game::class);
         $this->service->store($request->validated());
+        return redirect()->route('games.index')->with('success', 'Jogo cadastrado com sucesso!');
     }
 
     /**
@@ -46,12 +47,11 @@ class GameController extends Controller
      */
     public function show(string $id)
     {
-        Gate::authorize('view');
-
         $game = $this->service->find($id, ['tournament']);
+        Gate::authorize('view', $game);
 
         if (isset($game) && !empty($game)) {
-            return view('games.show');
+            return view('games.show', compact('game'));
         }
 
         return "<h1>JOGO NÃO ENCONTRADO!</h1>";
@@ -67,7 +67,7 @@ class GameController extends Controller
 
 
         if (isset($game) && !empty($game)) {
-            return view('games.edit');
+            return view('games.edit', compact('game'));
         }
 
         return "<h1>JOGO NÃO ENCONTRADO!</h1>";
@@ -101,7 +101,7 @@ class GameController extends Controller
 
         if(isset($game) && !empty($game)) {
             $this->service->remove($id);
-            return redirect()->route('game.index');
+            return redirect()->route('games.index');
         }
 
         return "<h1>JOGO NÃO ENCONTRADO!</h1>";
@@ -115,7 +115,7 @@ class GameController extends Controller
 
         if (isset($game) && !empty($game)) {
             $data = $this->service->audit($id);
-            return view('game.audit', compact(['data']));
+            return view('games.audit', compact(['data']));
         }
 
         return "<h1>JOGO NÃO ENCONTRADO!</h1>";
