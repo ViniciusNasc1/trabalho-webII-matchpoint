@@ -50,7 +50,7 @@ class ResultController extends Controller
         Gate::authorize('view', $result);
 
         if (isset($result) && !empty($result)) {
-            return view('result.show');
+            return view('result.show', compact('result'));
         }
 
         return "<h1>RESULTADO NÃO ENCONTRADO!</h1>";
@@ -66,7 +66,7 @@ class ResultController extends Controller
         Gate::authorize('update', $result);
 
         if (isset($result) && !empty($result)) {
-            return view('result.show');
+            return view('result.show', compact('result'));
         }
 
         return "<h1>RESULTADO NÃO ENCONTRADO!</h1>";
