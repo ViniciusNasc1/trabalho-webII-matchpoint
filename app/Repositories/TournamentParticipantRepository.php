@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\TournamentParticipant;
+use Illuminate\Database\Eloquent\Model;
 use Override;
 
 class TournamentParticipantRepository extends BaseRepository{
@@ -14,9 +15,9 @@ class TournamentParticipantRepository extends BaseRepository{
     }
 
     #[Override]
-    protected function getModel(): mixed
+    protected function getModel(): Model
     {
-        return $this->tournamentParticipantModel;
+        return $this->tournamentParticipantModel->newInstance();
     }
 
 }
