@@ -120,6 +120,6 @@ class ResultController extends Controller
             return view('result.audit', compact(['data']));
         }
 
-        return "<h1>JOGO NÃO ENCONTRADO!</h1>";
+        return "<h1>TIME NÃO ENCONTRADO!</h1>";
     }
 }

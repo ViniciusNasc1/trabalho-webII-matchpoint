@@ -35,7 +35,7 @@ class MatchupController extends Controller
     {
         Gate::authorize('create', Matchup::class);
         $this->service->store($request->validated());
-        return redirect()->route('tournaments.show', $request->tournament_id);
+        return redirect()->route('tournament.show', $request->tournament_id);
     }
 
     /**
@@ -130,6 +130,6 @@ class MatchupController extends Controller
             return view('match.audit', compact(['data']));
         }
 
-        return "<h1>JOGO NÃO ENCONTRADO!</h1>";
+        return "<h1>PARTIDA NÃO ENCONTRADA!</h1>";
     }
 }
