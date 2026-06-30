@@ -72,7 +72,7 @@ class MatchupController extends Controller
             'result',
         ]);;
         Gate::authorize('update', $match);
-        if (!isset($match) && !empty($match)) {
+        if (isset($match) && !empty($match)) {
             return view('match.edit', compact('match'));
         }
 

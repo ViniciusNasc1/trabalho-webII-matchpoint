@@ -6,6 +6,7 @@ use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TournamentController;
 use App\Http\Controllers\MatchupController;
 use App\Http\Controllers\ResultController;
+use App\Http\Controllers\TournamentParticipantController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -33,10 +34,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('tournaments', TournamentController::class);
 
     // Matchups
-    Route::resource('matchups', MatchupController::class)->except(['create', 'edit']);
+    Route::resource('matchups', MatchupController::class)->except(['edit']);
 
     // Results
-    Route::resource('results', ResultController::class)->except(['create', 'edit']);
+    Route::resource('results', ResultController::class)->except(['destroy']);
+
+    Route::resource('tournaments_participants', TournamentParticipantController::class);
 
 });
 
