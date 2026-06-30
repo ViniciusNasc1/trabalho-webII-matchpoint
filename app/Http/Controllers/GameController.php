@@ -62,9 +62,10 @@ class GameController extends Controller
      */
     public function edit(string $id)
     {
-        Gate::authorize('update');
-
         $game = $this->service->find($id);
+        Gate::authorize('update', $game);
+
+
         if (isset($game) && !empty($game)) {
             return view('games.edit');
         }
@@ -77,9 +78,8 @@ class GameController extends Controller
      */
     public function update(GameRequest $request, string $id)
     {
-        Gate::authorize('update');
-
         $game = $this->service->find($id);
+        Gate::authorize('update', $game);
 
         if (isset($game) && !empty($game)) {
             $this->service->update($request->validated(), $id);
