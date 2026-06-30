@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Game;
+use Illuminate\Database\Eloquent\Model;
 use Override;
 
 class GameRepository extends BaseRepository{
@@ -14,8 +15,8 @@ class GameRepository extends BaseRepository{
     }
 
     #[Override]
-    protected function getModel(): mixed
+    protected function getModel(): Model
     {
-        return $this->gameModel;
+        return $this->gameModel->newInstance();
     }
 }

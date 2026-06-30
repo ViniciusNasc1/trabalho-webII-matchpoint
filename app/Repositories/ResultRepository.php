@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Result;
+use Illuminate\Database\Eloquent\Model;
 use Override;
 
 class ResultRepository extends BaseRepository{
@@ -14,9 +15,9 @@ class ResultRepository extends BaseRepository{
     }
 
     #[Override]
-    protected function getModel(): mixed
+    protected function getModel(): Model
     {
-        return $this->resultModel;
+        return $this->resultModel->newInstance();
     }
 }
 

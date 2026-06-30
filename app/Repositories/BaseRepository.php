@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseRepository {
 
-    abstract protected function getModel(): mixed;
+    abstract protected function getModel(): Model;
 
     public function list(array $arrWith = [], array $where = [], string $orderBy = 'id') {
         if(isset($where['field']) && isset($where['value'])) {

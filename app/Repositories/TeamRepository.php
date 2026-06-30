@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Team;
+use Illuminate\Database\Eloquent\Model;
 use Override;
 
 class TeamRepository extends BaseRepository {
@@ -13,9 +14,9 @@ class TeamRepository extends BaseRepository {
     }
 
     #[Override]
-    protected function getModel(): mixed
+    protected function getModel(): Model
     {
-        return $this->teamModel;
+        return $this->teamModel->newInstance();
     }
 }
 
