@@ -39,6 +39,13 @@ class TeamMemberRequest extends FormRequest
     {
         $id = $this->route('team_member');
 
+        if ($this->isMethod('PUT') || $this->isMethod('PATCH')) {
+            return [
+                'status'    => 'required|in:active,invited,removed',
+                'joined_at' => 'nullable|date',
+            ];
+        }
+
         return [
             'team_id' => 'required|integer|exists:teams,id',
             'user_id' => [
@@ -49,8 +56,8 @@ class TeamMemberRequest extends FormRequest
                     ->where('team_id', $this->input('team_id'))
                     ->ignore($id),
             ],
-            'status'     => 'sometimes|required|in:active,invited,removed',
-            'joined_at'  => 'nullable|date',
+            'status'    => 'sometimes|required|in:active,invited,removed',
+            'joined_at' => 'nullable|date',
         ];
     }
 

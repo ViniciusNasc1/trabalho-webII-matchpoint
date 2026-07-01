@@ -24,7 +24,7 @@ class TeamMemberController extends Controller
     {
         Gate::authorize('create', TeamMember::class);
         $users = \App\Models\User::where('role', 'player')->get();
-        return view('teamMember.create');
+        return view('team-members.create', compact('users'));
     }
 
     /**
@@ -37,7 +37,7 @@ class TeamMemberController extends Controller
         if (!$return) {
             return back()->withErrors('Não foi possível adicionar o membro.');
         }
-        return redirect()->route('team.show', $return->team_id);
+        return redirect()->route('teams.show', $return->team_id);
     }
 
     /**
@@ -77,7 +77,7 @@ class TeamMemberController extends Controller
         }
         Gate::authorize('update', $member);
         $this->service->update($request->validated(), $id);
-        return redirect()->route('team.show', $member->team_id);
+        return redirect()->route('teams.show', $member->team_id);
     }
 
     /**

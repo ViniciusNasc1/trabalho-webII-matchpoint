@@ -37,7 +37,9 @@ class TeamController extends Controller
     public function store(TeamRequest $request)
     {
         Gate::authorize('create', Team::class);
-        $return = $this->service->store($request->validated());
+        $data = $request->validated();
+        $data['owner_id'] = $request->user()->id;
+        $return = $this->service->store($data);
 
         if (!$return) {
             return back()->withErrors('Não foi possível criar o time.');

@@ -51,6 +51,49 @@
         </div>
     </div>
 
+    {{-- Convites pendentes --}}
+    @if (isset($invites) && $invites->isNotEmpty())
+        <div class="mb-3">
+            <h5 class="fw-bold" style="color:#a78bfa;">
+                <i class="bi bi-envelope-fill me-2"></i>Convites pendentes
+            </h5>
+        </div>
+        <div class="row g-3 mb-4">
+            @foreach ($invites as $invite)
+                <div class="col-md-6">
+                    <div class="card-mp d-flex justify-content-between align-items-center">
+                        <div>
+                            <p class="fw-bold mb-1">{{ $invite->name }}</p>
+                            <small class="info-text">
+                                <i class="bi bi-person me-1"></i>
+                                Dono: {{ $invite->owner->name }}
+                            </small>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <form action="{{ route('team-members.update', $invite->pivot->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" name="status" value="active">
+                                <input type="hidden" name="joined_at" value="{{ now() }}">
+                                <button type="submit" class="btn btn-mp-fill btn-sm">
+                                    <i class="bi bi-check-lg me-1"></i> Aceitar
+                                </button>
+                            </form>
+                            <form action="{{ route('team-members.update', $invite->pivot->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" name="status" value="removed">
+                                <button type="submit" class="btn-danger-mp btn-sm">
+                                    <i class="bi bi-x-lg me-1"></i> Recusar
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @endif
+
     @can('create', App\Models\Tournament::class)
         <div class="mb-3">
             <h5 class="fw-bold" style="color:#a78bfa;">

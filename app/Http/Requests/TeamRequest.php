@@ -36,7 +36,6 @@ class TeamRequest extends FormRequest
         $id = $this->route('team');
 
         return [
-            'owner_id' => 'required|integer|exists:users,id',
             'name'     => "required|string|max:255|unique:teams,name,{$id}",
             'tag'      => "required|string|max:10|unique:teams,tag,{$id}",
             'logo_url' => 'nullable|url|max:500',

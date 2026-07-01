@@ -24,21 +24,20 @@ class Team extends Model implements Auditable
         return $this->belongsTo(User::class, 'owner_id');
     }
 
-    public function members()
+    public function members(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(User::class, 'team_members')
-                    ->withPivot('status', 'joined_at')
+                    ->withPivot('id', 'status', 'joined_at')
                     ->withTimestamps();
     }
 
-    public function activeMembers()
+    public function activeMembers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(User::class, 'team_members')
-                    ->withPivot('status', 'joined_at')
+                    ->withPivot('id', 'status', 'joined_at')
                     ->wherePivot('status', 'active')
                     ->withTimestamps();
     }
-
     public function tournaments(){
         return $this->morphToMany(Tournament::class, 'participant', 'tournament_participants');
     }

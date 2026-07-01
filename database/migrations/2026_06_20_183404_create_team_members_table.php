@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamp('joined_at')->nullable();
             $table->timestamps();
 
-            $table->unique('team_id', 'user_id');
+            $table->unique(['team_id', 'user_id']);
         });
     }
 

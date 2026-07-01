@@ -47,9 +47,10 @@ class User extends Authenticatable
         return $this->role === 'player';
     }
 
-    public function teams(){
+    public function teams(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
         return $this->belongsToMany(Team::class, 'team_members')
-                    ->withPivot('status', 'joined_at')
+                    ->withPivot('id', 'status', 'joined_at')
                     ->withTimestamps();
     }
 
