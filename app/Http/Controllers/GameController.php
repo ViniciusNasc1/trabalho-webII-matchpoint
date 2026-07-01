@@ -47,7 +47,7 @@ class GameController extends Controller
      */
     public function show(string $id)
     {
-        $game = $this->service->find($id, ['tournament']);
+        $game = $this->service->find($id, ['tournaments']);
         Gate::authorize('view', $game);
 
         if (isset($game) && !empty($game)) {
