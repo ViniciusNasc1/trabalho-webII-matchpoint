@@ -23,6 +23,7 @@ class TeamMemberController extends Controller
     public function create()
     {
         Gate::authorize('create', TeamMember::class);
+        $users = \App\Models\User::where('role', 'player')->get();
         return view('teamMember.create');
     }
 

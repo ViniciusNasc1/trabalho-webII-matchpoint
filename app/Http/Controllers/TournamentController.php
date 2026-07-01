@@ -7,6 +7,7 @@ use App\Models\Tournament;
 use App\Services\TournamentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use \App\Models\Game;
 
 class TournamentController extends Controller
 {
@@ -28,6 +29,7 @@ class TournamentController extends Controller
     public function create()
     {
         Gate::authorize('create', Tournament::class);
+        $games = Game::all();
         return view('tournaments.create');
     }
 
@@ -69,6 +71,7 @@ class TournamentController extends Controller
         Gate::authorize('update', $tournament);
 
         if (isset($tournament) && !empty($tournament)) {
+            $games = Game::all();
             return view('tournaments.edit', compact('tournament'));
         }
 

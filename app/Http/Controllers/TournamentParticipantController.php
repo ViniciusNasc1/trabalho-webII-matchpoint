@@ -21,8 +21,17 @@ class TournamentParticipantController extends Controller
      */
     public function create()
     {
-        Gate::authorize('create', TournamentParticipant::class);
-        return view('tournamentParticipant.create');
+        $tournamentId = request('tournament_id');
+        $tournament = \App\Models\Tournament::findOrFail($tournamentId);
+        
+        $teams = collect();
+        if ($tournament->mode === 'team') {
+            /** @var \App\Models\User $user */
+            $user = request()->user();
+            $teams = $user->ownedTeams;
+        }
+
+        return view('tournament-participants.create', compact('tournament', 'teams'));
     }
 
     /**
