@@ -12,6 +12,13 @@ class GameRequest extends FormRequest
     {
         return true;
     }
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'name'     => $this->filled('name') ? trim($this->input('name')) : $this->input('name'),
+            'platform' => $this->filled('platform') ? trim($this->input('platform')) : $this->input('platform'),
+        ]);
+    }
 
     public function rules(): array
     {
