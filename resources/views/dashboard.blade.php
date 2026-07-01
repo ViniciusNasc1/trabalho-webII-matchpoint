@@ -137,6 +137,15 @@
                     </a>
                 </div>
             </div>
+            <div class="col-md-3">
+                <div class="card-mp text-center">
+                    <i class="bi bi-shield-check" style="font-size:2rem; color:#a78bfa;"></i>
+                    <h3 class="mt-2">Auditoria</h3>
+                    <a href="{{ route('audits.index') }}" class="btn btn-mp-fill mt-2 w-100">
+                        <i class="bi bi-eye me-1"></i> Ver auditoria
+                    </a>
+                </div>
+            </div>
         </div>
     @endcan
 

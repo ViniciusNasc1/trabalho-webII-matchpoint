@@ -10,6 +10,7 @@ use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\TournamentParticipantController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AuditController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -45,6 +46,8 @@ Route::middleware('auth')->group(function () {
     Route::post('tournaments/{tournament}/start', [TournamentController::class, 'start'])->name('tournaments.start');
 
     Route::resource('team-members', TeamMemberController::class);
+
+    Route::get('/audits', [AuditController::class, 'index'])->name('audits.index');
 
 });
 
