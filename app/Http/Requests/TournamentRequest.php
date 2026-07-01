@@ -22,7 +22,7 @@ class TournamentRequest extends FormRequest
         $this->merge([
             'name'   => $this->filled('name') ? trim($this->input('name')) : $this->input('name'),
             'mode'   => $this->filled('mode') ? Str::lower(trim($this->input('mode'))) : $this->input('mode'),
-            'status' => $this->filled('status') ? Str::lower(trim($this->input('status'))) : $this->input('status'),
+            'status' => $this->input('status') ?? 'draft',
         ]);
     }
 
