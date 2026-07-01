@@ -13,7 +13,7 @@ class TournamentParticipant extends Model implements Auditable
     use AuditableTrait;
     use HasFactory, SoftDeletes;
 
-    protected $table = 'tournaments_participants';
+    protected $table = 'tournament_participants';
 
     protected $fillable = [
         'tournament_id',

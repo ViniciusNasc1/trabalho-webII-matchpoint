@@ -39,7 +39,12 @@ class TournamentController extends Controller
     public function store(TournamentRequest $request)
     {
         Gate::authorize('create', Tournament::class);
-        $this->service->store($request->validated());
+
+        $data = $request->validated();
+        $data['created_by'] = $request->user()->id;
+        $data['status'] = 'draft';
+
+        $this->service->store($data);
 
         return redirect()->route('tournaments.index')
                          ->with('success', 'Torneio criado com sucesso!');

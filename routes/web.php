@@ -40,7 +40,7 @@ Route::middleware('auth')->group(function () {
     // Results
     Route::resource('results', ResultController::class)->except(['destroy']);
 
-    Route::resource('tournaments-participants', TournamentParticipantController::class);
+    Route::resource('tournament-participants', TournamentParticipantController::class);
     Route::post('tournaments/{tournament}/start', [TournamentController::class, 'start'])->name('tournaments.start');
 
     Route::resource('team-members', TeamMemberController::class);

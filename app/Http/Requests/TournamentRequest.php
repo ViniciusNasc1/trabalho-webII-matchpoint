@@ -37,11 +37,10 @@ class TournamentRequest extends FormRequest
 
         return [
             'game_id'          => 'required|integer|exists:games,id',
-            'created_by'       => 'required|integer|exists:users,id',
             'name'             => "required|string|max:255|unique:tournaments,name,{$id}",
             'mode'             => 'required|string|in:solo,team',
             'max_participants' => 'required|integer|min:2',
-            'status'           => 'sometimes|required|in:draft,open,ongoing,finished',
+            'status' => 'nullable|in:draft,open,ongoing,finished',
             'starts_at'        => 'nullable|date',
         ];
     }
@@ -62,4 +61,5 @@ class TournamentRequest extends FormRequest
             'max_participants.min' => 'O torneio precisa aceitar no mínimo :min participantes!',
         ];
     }
+    
 }
