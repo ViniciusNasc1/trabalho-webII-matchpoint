@@ -30,7 +30,7 @@ class TournamentController extends Controller
     {
         Gate::authorize('create', Tournament::class);
         $games = Game::all();
-        return view('tournaments.create');
+        return view('tournaments.create', compact('games'));
     }
 
     /**
@@ -72,7 +72,7 @@ class TournamentController extends Controller
 
         if (isset($tournament) && !empty($tournament)) {
             $games = Game::all();
-            return view('tournaments.edit', compact('tournament'));
+            return view('tournaments.edit', compact('tournament', 'games'));
         }
 
         return "<h1>TORNEIO NÃO ENCONTRADO</h1>";
